@@ -14,18 +14,29 @@ namespace CSharpFormat
 		{
             var argsOption = args[0];
             var filePath = args[1];
+            //recursive
             if(argsOption == "-r")
             {
                 var files = GetCSharpFilePaths(filePath);
                 files.ForEach(path => Overwrite(path));
             }
+            //single
             else if(argsOption == "-s")
             {
-                Overwrite(filePath);
+                var result = FormattedString(filePath);
+                Overwrite(filePath, result);
             }
+            //stdout
             else if(argsOption == "-o")
             {
                 var result = FormattedString(filePath);
+                Console.WriteLine(result);
+            }
+            //from data
+            else if(argsOption == "-f")
+            {
+                var str = args[1];
+                var result = FormattedString(str);
                 Console.WriteLine(result);
             }
 		}
@@ -38,21 +49,16 @@ namespace CSharpFormat
             return files;
         }
 
-        static void Overwrite(string filePath)
+        static void Overwrite(string filePath, string formatted)
         {
-            var result = FormattedString(filePath);
-            File.WriteAllText(filePath, result);
+            File.WriteAllText(filePath, formatted);
         }
 
         static string FormattedString(string filePath)
         {
 			var readed = File.ReadAllText(filePath);
-// 			Console.WriteLine("----- before -----");
-// 			Console.WriteLine(readed);
-
            	var option = FormattingOptionsFactory.CreateMono();
             var textEditorOption = new TextEditorOptions();
-
 			var formatter = new CSharpFormatter(option, textEditorOption);
 			return formatter.Format(readed);
         }
