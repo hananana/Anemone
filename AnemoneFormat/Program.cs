@@ -10,7 +10,7 @@ namespace CSharpFormat
 {
 	class MainClass
 	{
-		public static void Main(string[] args)
+		public static void Main (string[] args)
 		{
 			var argsOption = args [0];
 			var filePath = args [1];
@@ -24,13 +24,13 @@ namespace CSharpFormat
 			}
             //single
             else if (argsOption == "-s") {
-				var result = FormattedString(filePath);
-				Overwrite(filePath, result);
+				var result = FormattedString (filePath);
+				Overwrite (filePath, result);
 			}
             //stdout
             else if (argsOption == "-o") {
-				var result = FormattedString(filePath);
-				Console.WriteLine(result);
+				var result = FormattedString (filePath);
+				Console.WriteLine (result);
 			}
             //from data
             else if (argsOption == "-f") {
