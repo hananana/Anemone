@@ -12,55 +12,56 @@ namespace CSharpFormat
 	{
 		public static void Main(string[] args)
 		{
-            var argsOption = args[0];
-            var filePath = args[1];
-            //recursive
-            if(argsOption == "-r")
-            {
-                var files = GetCSharpFilePaths(filePath);
-                files.ForEach(path => Overwrite(path));
-            }
+			var argsOption = args [0];
+			var filePath = args [1];
+			//recursive
+			if (argsOption == "-r") {
+				var files = GetCSharpFilePaths(filePath);
+				files.ForEach(path => {
+					var result = FormattedString(path);
+					Overwrite(path, result);
+				});
+			}
             //single
-            else if(argsOption == "-s")
-            {
-                var result = FormattedString(filePath);
-                Overwrite(filePath, result);
-            }
+            else if (argsOption == "-s") {
+				var result = FormattedString(filePath);
+				Overwrite(filePath, result);
+			}
             //stdout
-            else if(argsOption == "-o")
-            {
-                var result = FormattedString(filePath);
-                Console.WriteLine(result);
-            }
+            else if (argsOption == "-o") {
+				var result = FormattedString(filePath);
+				Console.WriteLine(result);
+			}
             //from data
-            else if(argsOption == "-f")
-            {
-                var str = args[1];
-                var result = FormattedString(str);
-                Console.WriteLine(result);
-            }
+            else if (argsOption == "-f") {
+				var str = args [1];
+				var result = FormattedString(str);
+				Console.WriteLine(result);
+			}
 		}
 
-        static List<string> GetCSharpFilePaths(string filePath)
-        {
-            var files = new List<string>();
-            var dirs = new List<string>(Directory.GetDirectories(filePath));
-            dirs.ForEach(dir => files.AddRange(Directory.GetFiles(dir, "*.cs")));
-            return files;
-        }
+		static List<string> GetCSharpFilePaths(string filePath)
+		{
+			var files = new List<string> ();
+			var dirs = new List<string> (Directory.GetDirectories(filePath));
+			dirs.ForEach(dir => files.AddRange(Directory.GetFiles(dir, "*.cs")));
+			return files;
+		}
 
-        static void Overwrite(string filePath, string formatted)
-        {
-            File.WriteAllText(filePath, formatted);
-        }
+		static void Overwrite(string filePath, string formatted)
+		{
+			File.WriteAllText(filePath, formatted);
+		}
 
-        static string FormattedString(string filePath)
-        {
+		static string FormattedString(string filePath)
+		{
 			var readed = File.ReadAllText(filePath);
-           	var option = FormattingOptionsFactory.CreateMono();
-            var textEditorOption = new TextEditorOptions();
-			var formatter = new CSharpFormatter(option, textEditorOption);
+			var option = FormattingOptionsFactory.CreateMono();
+			option.SpaceBeforeMethodCallParentheses = false;
+			option.SpaceBeforeMethodDeclarationParentheses = false;
+			var textEditorOption = new TextEditorOptions ();
+			var formatter = new CSharpFormatter (option, textEditorOption);
 			return formatter.Format(readed);
-        }
+		}
 	}
 }
