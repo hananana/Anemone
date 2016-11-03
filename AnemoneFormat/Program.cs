@@ -56,9 +56,8 @@ namespace CSharpFormat
 		static string FormattedString(string filePath)
 		{
 			var readed = File.ReadAllText(filePath);
-			var option = FormattingOptionsFactory.CreateMono();
-			option.SpaceBeforeMethodCallParentheses = false;
-			option.SpaceBeforeMethodDeclarationParentheses = false;
+			var option = FormattingOptionsFactory.CreateAllman();
+            option.IndentBlocksInsideExpressions = false;
 			var textEditorOption = new TextEditorOptions ();
 			var formatter = new CSharpFormatter (option, textEditorOption);
 			return formatter.Format(readed);
